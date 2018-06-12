@@ -15,13 +15,12 @@ function Book(title, author, pages, read) {
 	this.read = read
 }
 
-function addBookToLibrary(book) {
-	myLibrary.push(book)
-}
-
 function render() {
+
 	clear()
+
 	var myBook = new Book("","",0,false)
+
 	for(var key in myBook) {
 		var th = document.createElement('th')
 		th.className = "col"
@@ -31,14 +30,36 @@ function render() {
 		headings.appendChild(th)
 	}
 
+	var th = document.createElement('th')
+	th.className = "col"
+	var content = document.createTextNode("Remove")
+	th.appendChild(content)
+	var headings = document.getElementById("headings")
+	headings.appendChild(th)
+
 	for(var i = 0; i < myLibrary.length; i++) {
+
 		var tr = document.createElement('tr')
+
 		for(var key in myLibrary[i]){
 			var td = document.createElement('td')
 			var content = document.createTextNode(myLibrary[i][key])
 			td.appendChild(content)
 			tr.appendChild(td)
 		}
+
+		var td = document.createElement('td')
+		var icon = document.createElement('i')
+		var a = document.createElement('a')
+		td.style = "text-align:center"
+		icon.className = "fas fa-trash"
+		a.setAttribute('data-id', i)
+		a.addEventListener("click", function() { removeBookFromLibrary(this) }, false);
+		a.href="#"
+		a.appendChild(icon)
+		td.appendChild(a)
+		tr.appendChild(td)
+
 		var items = document.getElementById("items")
 		items.appendChild(tr)
 	}
@@ -50,6 +71,16 @@ function newBook() {
 	var pages = document.getElementById("input-pages").value
 	var read = document.getElementById("input-read").checked ? "Yes" : "No"
 	addBookToLibrary(new Book(title, author, pages, read))
+	render()
+}
+
+function addBookToLibrary(book) {
+	myLibrary.push(book)
+}
+
+function removeBookFromLibrary(elem) {
+	i = elem.getAttribute('data-id')
+	myLibrary.splice(i, 1)
 	render()
 }
 
