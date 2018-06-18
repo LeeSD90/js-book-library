@@ -1,6 +1,5 @@
 let myLibrary = []
 
-
 $(document).ready(function(){ 
 	addBookToLibrary(new Book("title1", "bobby",34,"No"))
 	addBookToLibrary(new Book("title2", "dobby",34,"Yes"))
@@ -8,11 +7,15 @@ $(document).ready(function(){
 	render()
  }) 
 
-function Book(title, author, pages, read) {
-	this.title = title
-	this.author = author
-	this.pages = pages
-	this.read = read
+class Book {
+	
+	constructor(title, author, pages, read) {
+		this.title = title
+		this.author = author
+		this.pages = pages
+		this.read = read
+	}
+
 }
 
 function render() {
