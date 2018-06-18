@@ -1,12 +1,3 @@
-let myLibrary = []
-
-$(document).ready(function(){ 
-	addBookToLibrary(new Book("title1", "bobby",34,"No"))
-	addBookToLibrary(new Book("title2", "dobby",34,"Yes"))
-	addBookToLibrary(new Book("title4", "jobby",34,"Yes"))
-	render()
- }) 
-
 class Book {
 	
 	constructor(title, author, pages, read) {
@@ -17,6 +8,31 @@ class Book {
 	}
 
 }
+
+class Library {
+	
+	constructor() {
+		this.books = []
+	}
+
+	addBook(book) {
+		myLibrary.books.push(book)
+	}
+	
+	removeBook(id) {
+		myLibrary.books.splice(id, 1)
+	}
+
+}
+
+myLibrary = new Library();
+
+$(document).ready(function(){ 
+	myLibrary.addBook(new Book("title1", "bobby",34,"No"))
+	myLibrary.addBook(new Book("title2", "dobby",34,"Yes"))
+	myLibrary.addBook(new Book("title4", "jobby",34,"Yes"))
+	render()
+ }) 
 
 function render() {
 
@@ -40,23 +56,23 @@ function render() {
 	var headings = document.getElementById("headings")
 	headings.appendChild(th)
 
-	for(var i = 0; i < myLibrary.length; i++) {
+	for(var i = 0; i < myLibrary.books.length; i++) {
 
 		var tr = document.createElement('tr')
 		tr.setAttribute('data-id', i)
 
-		for(var key in myLibrary[i]){
+		for(var key in myLibrary.books[i]){
 			var td = document.createElement('td')
 
 			if (key === "read") {
 				var b = document.createElement('button')
-				b.className = "btn btn-sm " + (myLibrary[i][key] === "Yes" ? "btn-success" : "btn-danger")
+				b.className = "btn btn-sm " + (myLibrary.books[i][key] === "Yes" ? "btn-success" : "btn-danger")
 				b.addEventListener("click", function() { toggleRead(this.closest("tr")) }, false)
-				b.innerHTML = myLibrary[i][key]
+				b.innerHTML = myLibrary.books[i][key]
 				td.appendChild(b)
 			} 
 			else {
-				var content = document.createTextNode(myLibrary[i][key])
+				var content = document.createTextNode(myLibrary.books[i][key])
 				td.appendChild(content)
 			}
 			
@@ -68,7 +84,7 @@ function render() {
 		var a = document.createElement('a')
 		td.style = "text-align:center"
 		icon.className = "fas fa-trash"
-		a.addEventListener("click", function() { removeBookFromLibrary(this.closest("tr")) }, false);
+		a.addEventListener("click", function() { myLibrary.removeBook(this.closest("tr").getAttribute('data-id')); render(); }, false);
 		a.href="#"
 		a.appendChild(icon)
 		td.appendChild(a)
@@ -84,22 +100,12 @@ function newBook() {
 	var author = document.getElementById("input-author").value
 	var pages = document.getElementById("input-pages").value
 	var read = document.getElementById("input-read").checked ? "Yes" : "No"
-	addBookToLibrary(new Book(title, author, pages, read))
+	myLibrary.addBook(new Book(title, author, pages, read))
 	render()
 }
 
 function toggleRead(elem){
-	myLibrary[elem.getAttribute('data-id')].read = myLibrary[elem.getAttribute('data-id')].read === "Yes" ? "No" : "Yes"
-	render()
-}
-
-function addBookToLibrary(book) {
-	myLibrary.push(book)
-}
-
-function removeBookFromLibrary(elem) {
-	i = elem.getAttribute('data-id')
-	myLibrary.splice(i, 1)
+	myLibrary.books[elem.getAttribute('data-id')].read = myLibrary.books[elem.getAttribute('data-id')].read === "Yes" ? "No" : "Yes"
 	render()
 }
 
