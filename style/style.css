@@ -5,3 +5,11 @@
 button {
     margin: 10px 0;
 }
+
+input:invalid {
+    border: 1px solid red;
+}
+
+input:valid {
+    border: 1px solid black;
+}
