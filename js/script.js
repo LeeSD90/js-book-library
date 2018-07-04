@@ -96,6 +96,7 @@ function render() {
 }
 
 function newBook() {
+	console.log("supp")
 	var title = document.getElementById("input-title").value
 	var author = document.getElementById("input-author").value
 	var pages = document.getElementById("input-pages").value
